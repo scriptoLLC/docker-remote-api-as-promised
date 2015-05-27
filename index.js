@@ -32,7 +32,6 @@ function drPromised(method, url, opts) {
           var resp = data.join('');
 
           if (json) {
-            console.log('making json');
             resp = JSON.parse(resp);
           }
 
