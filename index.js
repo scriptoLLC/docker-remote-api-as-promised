@@ -17,7 +17,7 @@ function drPromised(method, url, opts) {
   }
 
   return new Promise(function(resolve, reject) {
-    dkr[method].call(dkr, url, function(err, stream) {
+    dkr[method].call(dkr, url, opts, function(err, stream) {
       if (err) {
         return reject(err);
       }
@@ -32,7 +32,8 @@ function drPromised(method, url, opts) {
           var resp = data.join('');
 
           if (json) {
-            resp = JSON.stringify(resp);
+            console.log('making json');
+            resp = JSON.parse(resp);
           }
 
           resolve(resp);
