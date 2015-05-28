@@ -1,5 +1,7 @@
 [![Circle CI](https://circleci.com/gh/scriptoLLC/docker-remote-api-as-promised.svg?style=svg)](https://circleci.com/gh/scriptoLLC/docker-remote-api-as-promised)
 
+[![NPM](https://david-dm.org/scriptollc/docker-remote-api-as-promised.svg)](https://npmjs.org/package/docker-remote-api-as-promised/)
+
 # docker-remote-api as promised
 
 This is a promise-enabled wrapper for [docker-remote-api](https://github.com/mafintosh/docker-remote-api).
