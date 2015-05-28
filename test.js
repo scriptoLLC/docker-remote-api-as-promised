@@ -8,7 +8,9 @@ var dkr = docker(process.env.DOCKER_SOCK || '/var/run/docker.sock');
 test('it posts', function(t) {
   t.plan(2);
   dkr
-    .post('/images/create?fromImage=busybox', {body: null})
+    .post('/images/create?fromImage=busybox', {
+      body: null
+    })
     .then(function(resp) {
       t.type(resp, 'string', 'got back a string');
       t.ok(/Download\ complete/.test(resp), 'download completed');
@@ -19,11 +21,11 @@ test('it posts', function(t) {
 });
 
 test('it gets', function(t) {
+  t.plan(1);
   dkr
     .get('/images/busybox/json')
     .then(function(resp) {
       t.ok(resp);
-      t.end();
     })
     .catch(function(err) {
       t.notOk(!!err, err);
@@ -31,11 +33,100 @@ test('it gets', function(t) {
 });
 
 test('it parses json', function(t) {
+  t.plan(1);
   dkr
-    .get('/images/busybox/json', {json: true})
+    .get('/images/busybox/json', {
+      json: true
+    })
     .then(function(resp) {
       t.type(resp, 'object', 'an object not a string');
-      t.end();
+    })
+    .catch(function(err) {
+      t.notOk(!!err, err);
+    });
+});
+
+test('it add body to posts that do not have one', function(t) {
+  t.plan(2);
+  dkr
+    .post('/images/create?fromImage=scratch')
+    .then(function(resp) {
+      t.type(resp, 'string', 'got back a string');
+      t.ok(/Download\ complete/.test(resp, 'download complete'));
+    })
+    .catch(function(err) {
+      t.notOk(!!err, err);
+    });
+});
+
+test('it handles when something has no response', function(t) {
+  var image = 'hello-world';
+  var details = {
+    Hostname: "",
+    Domainname: "",
+    User: "",
+    Memory: 0,
+    MemorySwap: 0,
+    CpuShares: 512,
+    Cpuset: "0,1",
+    AttachStdin: true,
+    AttachStdout: true,
+    AttachStderr: true,
+    Tty: false,
+    OpenStdin: false,
+    StdinOnce: false,
+    Env: null,
+    Cmd: [],
+    Entrypoint: "",
+    Image: image,
+    Volumes: {},
+    WorkingDir: "",
+    NetworkDisabled: false,
+    ExposedPorts: {},
+    SecurityOpts: [""],
+    HostConfig: {
+      Binds: [],
+      Links: [],
+      LxcConf: {},
+      PortBindings: {},
+      PublishAllPorts: false,
+      Privileged: false,
+      ReadonlyRootfs: false,
+      Dns: [],
+      DnsSearch: [""],
+      ExtraHosts: null,
+      VolumesFrom: [],
+      CapAdd: [],
+      Capdrop: [],
+      RestartPolicy: {
+        "Name": "",
+        "MaximumRetryCount": 0
+      },
+      NetworkMode: "bridge",
+      Devices: []
+    }
+  };
+
+  var opts = {
+    qs: {
+      name: 'test'
+    },
+    body: JSON.stringify(details),
+    headers: {
+      'content-type': 'application/json'
+    }
+  };
+
+  dkr
+    .post('/images/create?fromImage=' + image)
+    .then(function() {
+      return dkr.post('/containers/create', opts);
+    })
+    .then(function() {
+      return dkr.post('/containers/test/stop');
+    })
+    .then(function(worked) {
+      t.ok(worked);
     })
     .catch(function(err) {
       t.notOk(!!err, err);

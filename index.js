@@ -16,6 +16,10 @@ function drPromised(method, url, opts) {
     delete opts.json;
   }
 
+  if (method === 'post' && !opts.body) {
+    opts.body = null;
+  }
+
   return new Promise(function(resolve, reject) {
     dkr[method].call(dkr, url, opts, function(err, stream) {
       if (err) {
@@ -23,6 +27,10 @@ function drPromised(method, url, opts) {
       }
 
       var data = [];
+
+      if (!stream) {
+        return resolve(true);
+      }
 
       stream
         .on('data', function(chunk) {
