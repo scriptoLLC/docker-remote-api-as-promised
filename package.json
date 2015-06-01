@@ -1,6 +1,6 @@
 {
   "name": "docker-remote-api-as-promised",
-  "version": "1.0.2",
+  "version": "2.0.0",
   "description": "A promisified version of docker-remote-api",
   "main": "index.js",
   "scripts": {
