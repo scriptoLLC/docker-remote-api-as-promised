@@ -22,7 +22,13 @@ function drPromised(method, url, opts) {
 
   return new Promise(function(resolve, reject) {
     dkr[method].call(dkr, url, opts, function(err, stream) {
-      if (err) {
+      var statusRange = 2;
+
+      if (stream && stream.statusCode) {
+        statusRange = Math.floor(stream.statusCode / 100);
+      }
+
+      if (err || statusRange !== 2) {
         return reject(err);
       }
 
@@ -35,6 +41,9 @@ function drPromised(method, url, opts) {
       stream
         .on('data', function(chunk) {
           data.push(chunk.toString());
+        })
+        .on('error', function(err) {
+          reject(err);
         })
         .on('end', function(){
           var resp = data.join('');

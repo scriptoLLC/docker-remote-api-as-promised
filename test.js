@@ -60,6 +60,8 @@ test('it add body to posts that do not have one', function(t) {
 });
 
 test('it handles when something has no response', function(t) {
+  t.plan(1);
+
   var image = 'hello-world';
   var details = {
     Hostname: "",
@@ -130,5 +132,18 @@ test('it handles when something has no response', function(t) {
     })
     .catch(function(err) {
       t.notOk(!!err, err);
+    });
+});
+
+test('it handles rejection', function(t) {
+  t.plan(2);
+  dkr
+    .post('/image/create?fromImage=zoopitydoo')
+    .then(function() {
+      t.ok(false, 'you should not pass');
+    })
+    .catch(function(err) {
+      t.ok(err, 'promise was rejected');
+      t.equal(err.status, 404, 'status was 404 for image');
     });
 });
