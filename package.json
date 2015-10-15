@@ -33,6 +33,6 @@
     "native-or-bluebird": "~1.2.0"
   },
   "devDependencies": {
-    "tap": "~1.2.0"
+    "tap": "^2.1.1"
   }
 }
