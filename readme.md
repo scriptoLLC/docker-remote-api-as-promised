@@ -4,6 +4,8 @@
 
 # docker-remote-api as promised
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/scriptoLLC/docker-remote-api-as-promised.svg)](https://greenkeeper.io/)
+
 This is a promise-enabled wrapper for [docker-remote-api](https://github.com/mafintosh/docker-remote-api).
 
 The API purports to be the same, just returning a promise for each transaction. Being though that a promise is returned, you must supply the `body` for a transaction via the options object.  There is also no ability to get back the response stream from Docker currently &emdash; you will receive the response as the argument to resolving the promise.
