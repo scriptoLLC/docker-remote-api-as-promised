@@ -28,11 +28,11 @@
   },
   "homepage": "https://github.com/scriptollc/docker-remote-api-as-promised#readme",
   "dependencies": {
-    "bluebird": "~2.9.26",
+    "bluebird": "~3.5.0",
     "docker-remote-api": "~4.4.1",
     "native-or-bluebird": "~1.2.0"
   },
   "devDependencies": {
-    "tap": "^2.1.1"
+    "tap": "^10.5.1"
   }
 }
